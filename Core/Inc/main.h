@@ -42,6 +42,19 @@
 #define DIGIT_4_PIN GPIO_PIN_11
 #define DIGIT_PORT GPIOA
 
+// Definiciones para los pines de las columnas
+#define COLUMN_1_PIN GPIO_PIN_12
+#define COLUMN_2_PIN GPIO_PIN_13
+#define COLUMN_3_PIN GPIO_PIN_14
+#define COLUMN_4_PIN GPIO_PIN_15
+#define COLUMN_PORT GPIOA
+
+#define ROW_1_PIN GPIO_PIN_0
+#define ROW_2_PIN GPIO_PIN_1
+#define ROW_3_PIN GPIO_PIN_2
+#define ROW_4_PIN GPIO_PIN_3
+#define ROW_PORT GPIOB
+
 void System_Init(void);
 void Clock_Init(void);
 void UART1_Init(void);
@@ -50,6 +63,7 @@ void Error_Handler();
 
 void DisplayTask(void *pvParameters);
 void CounterTask(void *pvParameters);
+void KeyboardTask(void *pvParameters);
 void updateDigits(uint16_t number);
 void displayDigit(uint8_t number);
 

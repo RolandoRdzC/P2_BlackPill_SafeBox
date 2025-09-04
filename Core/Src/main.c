@@ -1,5 +1,4 @@
 #include "main.h"
-#include "stm32f4xx_hal_gpio.h"
 
 const uint8_t numberPatterns[] = {
     ~0x3F, // 0
@@ -16,11 +15,15 @@ const uint8_t numberPatterns[] = {
 
 volatile uint16_t displayNumber = 0;
 volatile uint8_t digits[4] = {0};
+volatile uint8_t column = 0;
+volatile uint8_t passwordBuffer[4] = {0};  // Buffer para la contraseña
+volatile uint8_t passwordIndex = 0;        // Índice actual en el buffer
 
 int main(void) {
   System_Init();
   xTaskCreate(DisplayTask, "Display", 128, NULL, 2, NULL);
   xTaskCreate(CounterTask, "Counter", 128, NULL, 1, NULL);
+  xTaskCreate(KeyboardTask, "Keyboard", 128, NULL, 1, NULL);
   vTaskStartScheduler();
 }
 
@@ -60,7 +63,92 @@ void CounterTask(void *pvParameters __attribute__((unused))) {
     if (displayNumber > 9999)
       displayNumber = 0;
     updateDigits(displayNumber);
-    vTaskDelay(pdMS_TO_TICKS(6600));
+    vTaskDelay(pdMS_TO_TICKS(1000));
+  }
+}
+const char keymap[4][4] = {
+    {'1', '2', '3', 'A'},
+    {'4', '5', '6', 'B'},
+    {'7', '8', '9', 'C'},
+    {'*', '0', '#', 'D'}
+};
+
+void KeyboardTask(void *pvParameters __attribute__((unused))) {
+  uint16_t columnPin;
+  uint8_t currentColumn = 0;
+  uint16_t rowPins[] = {ROW_1_PIN, ROW_2_PIN, ROW_3_PIN, ROW_4_PIN};
+  
+  while (1) {
+    HAL_GPIO_WritePin(COLUMN_PORT,
+                      COLUMN_1_PIN | COLUMN_2_PIN | COLUMN_3_PIN | COLUMN_4_PIN,
+                      DIGIT_OFF);
+    switch (currentColumn) {
+    case 0:
+      columnPin = COLUMN_1_PIN;
+      break;
+    case 1:
+      columnPin = COLUMN_2_PIN;
+      break;
+    case 2:
+      columnPin = COLUMN_3_PIN;
+      break;
+    case 3:
+      columnPin = COLUMN_4_PIN;
+      break;
+    }
+    HAL_GPIO_WritePin(COLUMN_PORT, columnPin, DIGIT_ON);
+    vTaskDelay(pdMS_TO_TICKS(1));
+    for (int row = 0; row < 4; row++) {
+      if (HAL_GPIO_ReadPin(ROW_PORT, rowPins[row]) == GPIO_PIN_SET) {
+        char pressedKey = keymap[row][currentColumn];
+        
+        // Procesar la tecla presionada
+        if (pressedKey >= '0' && pressedKey <= '9') {
+          // Solo agregar dígito si hay espacio en el buffer
+          if (passwordIndex < 4) {
+            passwordBuffer[passwordIndex] = pressedKey - '0';
+            passwordIndex++;
+            // Mostrar el número actual en el display
+            displayNumber = 0;
+            for (int i = 0; i < passwordIndex; i++) {
+              displayNumber = displayNumber * 10 + passwordBuffer[i];
+            }
+            updateDigits(displayNumber);
+          }
+        }
+        else if (pressedKey == 'A') {
+          // Borrar último dígito
+          if (passwordIndex > 0) {
+            passwordIndex--;
+            passwordBuffer[passwordIndex] = 0;
+            // Actualizar display
+            displayNumber = 0;
+            for (int i = 0; i < passwordIndex; i++) {
+              displayNumber = displayNumber * 10 + passwordBuffer[i];
+            }
+            updateDigits(displayNumber);
+          }
+        }
+        else if (pressedKey == 'B') {
+          // Enter - Aquí puedes agregar la lógica para verificar la contraseña
+          // Por ahora solo reiniciamos el buffer
+          passwordIndex = 0;
+          displayNumber = 0;
+          for (int i = 0; i < 4; i++) {
+            passwordBuffer[i] = 0;
+          }
+          updateDigits(displayNumber);
+        }
+        
+        // Debouncing
+        vTaskDelay(pdMS_TO_TICKS(50));
+        while (HAL_GPIO_ReadPin(ROW_PORT, rowPins[row]) == GPIO_PIN_SET) {
+          vTaskDelay(pdMS_TO_TICKS(10));
+        }
+      }
+    }
+    currentColumn = (currentColumn + 1) % 4;
+    vTaskDelay(pdMS_TO_TICKS(5));
   }
 }
 
