@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/rolando/Documents/real_Time/Projects/P2_BlackPill/build/cmake_install.cmake",
+		"/home/rolando/Documents/real_Time/Projects/P2_BlackPill/build/cmake/stm32cubemx/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

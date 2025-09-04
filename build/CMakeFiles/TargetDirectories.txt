@@ -1,0 +1,6 @@
+/home/rolando/Documents/real_Time/Projects/P2_BlackPill/build/CMakeFiles/FreeRTOS-Kernel.dir
+/home/rolando/Documents/real_Time/Projects/P2_BlackPill/build/CMakeFiles/P2_BlackPill.dir
+/home/rolando/Documents/real_Time/Projects/P2_BlackPill/build/CMakeFiles/edit_cache.dir
+/home/rolando/Documents/real_Time/Projects/P2_BlackPill/build/CMakeFiles/rebuild_cache.dir
+/home/rolando/Documents/real_Time/Projects/P2_BlackPill/build/cmake/stm32cubemx/CMakeFiles/edit_cache.dir
+/home/rolando/Documents/real_Time/Projects/P2_BlackPill/build/cmake/stm32cubemx/CMakeFiles/rebuild_cache.dir
