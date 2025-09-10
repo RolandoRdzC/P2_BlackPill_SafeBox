@@ -47,13 +47,17 @@
 #define COLUMN_2_PIN GPIO_PIN_13
 #define COLUMN_3_PIN GPIO_PIN_14
 #define COLUMN_4_PIN GPIO_PIN_15
-#define COLUMN_PORT GPIOA
+#define COLUMN_PORT GPIOB
 
 #define ROW_1_PIN GPIO_PIN_0
 #define ROW_2_PIN GPIO_PIN_1
 #define ROW_3_PIN GPIO_PIN_2
 #define ROW_4_PIN GPIO_PIN_3
 #define ROW_PORT GPIOB
+
+// Patrones para letras y números
+extern const uint8_t numberPatterns[];
+extern const uint8_t letterPatterns[];
 
 void System_Init(void);
 void Clock_Init(void);
@@ -64,7 +68,12 @@ void Error_Handler();
 void DisplayTask(void *pvParameters);
 void CounterTask(void *pvParameters);
 void KeyboardTask(void *pvParameters);
-void updateDigits(uint16_t number);
-void displayDigit(uint8_t number);
+void updateDigits(uint32_t number);
+void displayDigit(uint8_t value, uint8_t isLetter);
+void displayText(const char* text);
+void checkPassword(void);
+
+#define LOCK_PIN GPIO_PIN_12
+#define LOCK_PORT GPIOB
 
 #endif /* __MAIN_H */

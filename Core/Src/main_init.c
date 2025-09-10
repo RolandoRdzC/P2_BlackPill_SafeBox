@@ -41,9 +41,10 @@ void Clock_Init(void) {
 }
 
 void GPIO_Init(void) {
-  // Habilitar relojes para GPIOA y GPIOC
+  // Habilitar relojes para GPIOA, GPIOB y GPIOC
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
   
   // Estructura para configuración de pines
   GPIO_InitTypeDef pin = {0};
@@ -69,11 +70,36 @@ void GPIO_Init(void) {
   pin.Pull = GPIO_NOPULL;
   pin.Speed = GPIO_SPEED_FREQ_MEDIUM;
   HAL_GPIO_Init(GPIOA, &pin);
+
+  // Configurar pines de columnas del teclado (PA12-PA15)
+  pin.Pin = COLUMN_1_PIN | COLUMN_2_PIN | COLUMN_3_PIN | COLUMN_4_PIN;
+  pin.Mode = GPIO_MODE_OUTPUT_PP;
+  pin.Pull = GPIO_NOPULL;
+  pin.Speed = GPIO_SPEED_FREQ_MEDIUM;
+  HAL_GPIO_Init(COLUMN_PORT, &pin);
+
+  // Configurar pines de filas del teclado (PB0-PB3) como entradas con pull-down
+  pin.Pin = ROW_1_PIN | ROW_2_PIN | ROW_3_PIN | ROW_4_PIN;
+  pin.Mode = GPIO_MODE_INPUT;
+  pin.Pull = GPIO_PULLDOWN;  // Pull-down para evitar lecturas falsas
+  pin.Speed = GPIO_SPEED_FREQ_MEDIUM;
+  HAL_GPIO_Init(ROW_PORT, &pin);
+
+  // Configurar pin de bloqueo (PB12)
+  pin.Pin = LOCK_PIN;
+  pin.Mode = GPIO_MODE_OUTPUT_PP;
+  pin.Pull = GPIO_NOPULL;
+  pin.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(LOCK_PORT, &pin);
   
   // Inicializar todos los segmentos y dígitos en estado apagado
   HAL_GPIO_WritePin(SEG_PORT, SEG_A_PIN | SEG_B_PIN | SEG_C_PIN | SEG_D_PIN |
                               SEG_E_PIN | SEG_F_PIN | SEG_G_PIN | SEG_DP_PIN, SEGMENT_OFF);
   HAL_GPIO_WritePin(DIGIT_PORT, DIGIT_1_PIN | DIGIT_2_PIN | DIGIT_3_PIN | DIGIT_4_PIN, DIGIT_OFF);
+  
+  // Inicializar columnas del teclado y pin de bloqueo en estado inicial
+  HAL_GPIO_WritePin(COLUMN_PORT, COLUMN_1_PIN | COLUMN_2_PIN | COLUMN_3_PIN | COLUMN_4_PIN, DIGIT_OFF);
+  HAL_GPIO_WritePin(LOCK_PORT, LOCK_PIN, GPIO_PIN_RESET);
 }
 
 /*

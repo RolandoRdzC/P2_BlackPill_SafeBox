@@ -13,16 +13,49 @@ const uint8_t numberPatterns[] = {
     ~0x6F  // 9
 };
 
-volatile uint16_t displayNumber = 0;
+// Definir contraseña correcta
+const uint8_t correctPassword[4] = {1, 2, 3, 4};  // Contraseña: 1234
+
+const uint8_t letterPatterns[] = {
+    ~0x77, // A  (0b01110111: a b c e f g)
+    ~0x7C, // b  (0b01111100: b c d e f)
+    ~0x39, // C  (0b00111001: a d e f)
+    ~0x5E, // d  (0b01011110: b c d e g)
+    ~0x79, // E  (0b01111001: a d e f g)
+    ~0x71, // F  (0b01110001: a e f g)
+    ~0x7D, // G  (0b01111101: a c d e f g)
+    ~0x74, // H  (0b01110100: b c e f g)
+    ~0x06, // I  (0b00000110: b c)
+    ~0x1E, // J  (0b00011110: b c d e)
+    ~0x70, // k  (0b01110000: e f g)
+    ~0x38, // L  (0b00111000: d e f)
+    ~0x37, // M  (0b00110111: a b c e f)
+    ~0x54, // n  (0b01010100: c e g)
+    ~0x3F, // O  (0b00111111: a b c d e f)
+    ~0x73, // P  (0b01110011: a b e f g)
+    ~0x67, // q  (0b01100111: a b c f g)
+    ~0x50, // r  (0b01010000: e g)
+    ~0x6D, // S  (0b01101101: a c d f g)
+    ~0x78, // t  (0b01111000: d e f g)
+    ~0x3E, // U  (0b00111110: b c d e f)
+    ~0x3E, // V  (0b00111110: b c d e f)
+    ~0x7E, // W  (0b01111110: b c d e f g)
+    ~0x76, // X  (0b01110110: b c e f g)
+    ~0x6E, // Y  (0b01101110: b c d f g)
+    ~0x5B  // Z  (0b01011011: a d e g)
+};
+
+// Variables globales
+volatile uint32_t displayNumber = 0;  // Cambiado a uint32_t
 volatile uint8_t digits[4] = {0};
 volatile uint8_t column = 0;
-volatile uint8_t passwordBuffer[4] = {0};  // Buffer para la contraseña
-volatile uint8_t passwordIndex = 0;        // Índice actual en el buffer
+volatile uint8_t dataBuffer[20] = {0};  // Buffer para almacenar dígitos
+volatile uint8_t dataIndex = 0;        // Índice actual en el buffer
 
 int main(void) {
   System_Init();
   xTaskCreate(DisplayTask, "Display", 128, NULL, 2, NULL);
-  xTaskCreate(CounterTask, "Counter", 128, NULL, 1, NULL);
+  //xTaskCreate(CounterTask, "Counter", 128, NULL, 1, NULL);
   xTaskCreate(KeyboardTask, "Keyboard", 128, NULL, 1, NULL);
   vTaskStartScheduler();
 }
@@ -35,7 +68,7 @@ void DisplayTask(void *pvParameters) {
     HAL_GPIO_WritePin(DIGIT_PORT,
                       DIGIT_1_PIN | DIGIT_2_PIN | DIGIT_3_PIN | DIGIT_4_PIN,
                       DIGIT_OFF);
-    displayDigit(digits[currentDigit]);
+    displayDigit(digits[currentDigit], digits[currentDigit] > 15);  // isLetter es true si el valor > 15
     uint16_t digitPin;
     switch (currentDigit) {
     case 0:
@@ -105,39 +138,35 @@ void KeyboardTask(void *pvParameters __attribute__((unused))) {
         // Procesar la tecla presionada
         if (pressedKey >= '0' && pressedKey <= '9') {
           // Solo agregar dígito si hay espacio en el buffer
-          if (passwordIndex < 4) {
-            passwordBuffer[passwordIndex] = pressedKey - '0';
-            passwordIndex++;
-            // Mostrar el número actual en el display
+          if (dataIndex < 20) {
+            dataBuffer[dataIndex] = pressedKey - '0';
+            dataIndex++;
+            // Mostrar los últimos 4 dígitos en el display
             displayNumber = 0;
-            for (int i = 0; i < passwordIndex; i++) {
-              displayNumber = displayNumber * 10 + passwordBuffer[i];
+            int start = (dataIndex > 4) ? (dataIndex - 4) : 0;
+            for (int i = start; i < dataIndex; i++) {
+              displayNumber = displayNumber * 10 + dataBuffer[i];
             }
             updateDigits(displayNumber);
           }
         }
         else if (pressedKey == 'A') {
           // Borrar último dígito
-          if (passwordIndex > 0) {
-            passwordIndex--;
-            passwordBuffer[passwordIndex] = 0;
-            // Actualizar display
+          if (dataIndex > 0) {
+            dataIndex--;
+            dataBuffer[dataIndex] = 0;
+            // Actualizar display mostrando últimos 4 dígitos
             displayNumber = 0;
-            for (int i = 0; i < passwordIndex; i++) {
-              displayNumber = displayNumber * 10 + passwordBuffer[i];
+            int start = (dataIndex > 4) ? (dataIndex - 4) : 0;
+            for (int i = start; i < dataIndex; i++) {
+              displayNumber = displayNumber * 10 + dataBuffer[i];
             }
             updateDigits(displayNumber);
           }
         }
         else if (pressedKey == 'B') {
-          // Enter - Aquí puedes agregar la lógica para verificar la contraseña
-          // Por ahora solo reiniciamos el buffer
-          passwordIndex = 0;
-          displayNumber = 0;
-          for (int i = 0; i < 4; i++) {
-            passwordBuffer[i] = 0;
-          }
-          updateDigits(displayNumber);
+          // Verificar la contraseña
+          checkPassword();
         }
         
         // Debouncing
@@ -152,15 +181,80 @@ void KeyboardTask(void *pvParameters __attribute__((unused))) {
   }
 }
 
-void updateDigits(uint16_t number) {
+void checkPassword(void) {
+    uint8_t isCorrect = 1;
+    
+    // Solo verificar los últimos 4 dígitos ingresados
+    if (dataIndex >= 4) {
+        int start = dataIndex - 4;
+        for(int i = 0; i < 4; i++) {
+            if(dataBuffer[start + i] != correctPassword[i]) {
+                isCorrect = 0;
+                break;
+            }
+        }
+    } else {
+        isCorrect = 0; // Si hay menos de 4 dígitos, la contraseña es incorrecta
+    }
+    
+    if(isCorrect) {
+        // Mostrar "OPEN" y activar el pin de salida
+        displayText("OPEN");
+        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);  // Activar pin de salida
+        vTaskDelay(pdMS_TO_TICKS(10000)); // Mostrar por 2 segundos
+        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);  // Desactivar pin
+    } else {
+        // Mostrar "FAIL"
+        displayText("FAIL");
+        vTaskDelay(pdMS_TO_TICKS(10000)); // Mostrar por 2 segundos
+    }
+    
+    // Limpiar el buffer y display
+    dataIndex = 0;
+    displayNumber = 0;
+    for(int i = 0; i < 20; i++) {
+        dataBuffer[i] = 0;
+    }
+    updateDigits(displayNumber);
+}
+
+void updateDigits(uint32_t number) {
   digits[0] = number % 10;
   digits[1] = (number / 10) % 10;
   digits[2] = (number / 100) % 10;
   digits[3] = (number / 1000) % 10;
 }
 
-void displayDigit(uint8_t number) {
-  uint8_t pattern = numberPatterns[number];
+void displayText(const char* text) {
+    int len = 0;
+    while(text[len] != '\0' && len < 4) len++;
+    for(int i = 0; i < 4; i++) {
+        // Invertimos el orden de escritura para que se muestre correctamente
+        int displayPos = 3 - i;  // Invertimos la posición (3,2,1,0 en lugar de 0,1,2,3)
+        if (i < len && text[i] >= 'A' && text[i] <= 'Z') {
+            // Almacenamos el índice + 16 para distinguir entre números y letras
+            digits[displayPos] = (text[i] - 'A') + 16;
+        } else {
+            digits[displayPos] = 255; // valor fuera de rango para apagar el dígito
+        }
+    }
+}
+
+void displayDigit(uint8_t value, uint8_t isLetter) {
+    uint8_t pattern;
+    if (isLetter) {
+        // Si es una letra, restamos 16 para obtener el índice correcto en letterPatterns
+        uint8_t letterIndex = value - 16;
+        if (letterIndex < 26) {
+            pattern = letterPatterns[letterIndex];
+        } else {
+            pattern = 0xFF; // Segmentos apagados si el índice es inválido
+        }
+    } else if (value < 10) {
+        pattern = numberPatterns[value];
+    } else {
+        pattern = 0xFF; // Segmentos apagados para valores fuera de rango
+    }
 
   HAL_GPIO_WritePin(SEG_PORT, SEG_A_PIN,
                     (pattern & 0x01) ? SEGMENT_ON : SEGMENT_OFF);
