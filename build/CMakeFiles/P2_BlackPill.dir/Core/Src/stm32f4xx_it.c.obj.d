@@ -66,4 +66,6 @@ CMakeFiles/P2_BlackPill.dir/Core/Src/stm32f4xx_it.c.obj: \
  /home/rolando/install/FreeRTOS-Kernel/include/list.h \
  /home/rolando/install/FreeRTOS-Kernel/include/task.h \
  /home/rolando/install/FreeRTOS-Kernel/include/timers.h \
+ /home/rolando/install/FreeRTOS-Kernel/include/semphr.h \
+ /home/rolando/install/FreeRTOS-Kernel/include/queue.h \
  /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Core/Inc/stm32f4xx_it.h

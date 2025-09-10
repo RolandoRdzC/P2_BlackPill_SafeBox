@@ -70,6 +70,8 @@ CMakeFiles/P2_BlackPill.dir/USB_DEVICE/Target/usbd_conf.c.obj: \
  /home/rolando/install/FreeRTOS-Kernel/include/list.h \
  /home/rolando/install/FreeRTOS-Kernel/include/task.h \
  /home/rolando/install/FreeRTOS-Kernel/include/timers.h \
+ /home/rolando/install/FreeRTOS-Kernel/include/semphr.h \
+ /home/rolando/install/FreeRTOS-Kernel/include/queue.h \
  /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h \
  /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
  /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h \

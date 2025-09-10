@@ -1,4 +1,7 @@
 #include "main.h"
+#include "portmacro.h"
+#include "stm32f4xx_hal_def.h"
+#include "stm32f4xx_hal_gpio.h"
 
 const uint8_t numberPatterns[] = {
     ~0x3F, // 0
@@ -12,9 +15,7 @@ const uint8_t numberPatterns[] = {
     ~0x7F, // 8
     ~0x6F  // 9
 };
-
-// Definir contraseña correcta
-const uint8_t correctPassword[4] = {1, 2, 3, 4};  // Contraseña: 1234
+const uint8_t correctPassword[4] = {1, 2, 3, 4};
 
 const uint8_t letterPatterns[] = {
     ~0x77, // A  (0b01110111: a b c e f g)
@@ -45,18 +46,22 @@ const uint8_t letterPatterns[] = {
     ~0x5B  // Z  (0b01011011: a d e g)
 };
 
-// Variables globales
-volatile uint32_t displayNumber = 0;  // Cambiado a uint32_t
+volatile uint32_t displayNumber = 0; 
 volatile uint8_t digits[4] = {0};
 volatile uint8_t column = 0;
-volatile uint8_t dataBuffer[20] = {0};  // Buffer para almacenar dígitos
-volatile uint8_t dataIndex = 0;        // Índice actual en el buffer
+volatile uint8_t dataBuffer[20] = {0};  
+volatile uint8_t dataIndex = 0;      
+SemaphoreHandle_t xSem;
 
 int main(void) {
   System_Init();
+  xSem = xSemaphoreCreateBinary();
+
+
   xTaskCreate(DisplayTask, "Display", 128, NULL, 2, NULL);
   //xTaskCreate(CounterTask, "Counter", 128, NULL, 1, NULL);
   xTaskCreate(KeyboardTask, "Keyboard", 128, NULL, 1, NULL);
+  xTaskCreate(OpenTask, "Door", 128, NULL, 1, NULL);
   vTaskStartScheduler();
 }
 
@@ -134,14 +139,10 @@ void KeyboardTask(void *pvParameters __attribute__((unused))) {
     for (int row = 0; row < 4; row++) {
       if (HAL_GPIO_ReadPin(ROW_PORT, rowPins[row]) == GPIO_PIN_SET) {
         char pressedKey = keymap[row][currentColumn];
-        
-        // Procesar la tecla presionada
         if (pressedKey >= '0' && pressedKey <= '9') {
-          // Solo agregar dígito si hay espacio en el buffer
           if (dataIndex < 20) {
             dataBuffer[dataIndex] = pressedKey - '0';
             dataIndex++;
-            // Mostrar los últimos 4 dígitos en el display
             displayNumber = 0;
             int start = (dataIndex > 4) ? (dataIndex - 4) : 0;
             for (int i = start; i < dataIndex; i++) {
@@ -151,11 +152,9 @@ void KeyboardTask(void *pvParameters __attribute__((unused))) {
           }
         }
         else if (pressedKey == 'A') {
-          // Borrar último dígito
           if (dataIndex > 0) {
             dataIndex--;
             dataBuffer[dataIndex] = 0;
-            // Actualizar display mostrando últimos 4 dígitos
             displayNumber = 0;
             int start = (dataIndex > 4) ? (dataIndex - 4) : 0;
             for (int i = start; i < dataIndex; i++) {
@@ -165,11 +164,9 @@ void KeyboardTask(void *pvParameters __attribute__((unused))) {
           }
         }
         else if (pressedKey == 'B') {
-          // Verificar la contraseña
-          checkPassword();
+          //checkPassword();
+          xSemaphoreGive(xSem);
         }
-        
-        // Debouncing
         vTaskDelay(pdMS_TO_TICKS(50));
         while (HAL_GPIO_ReadPin(ROW_PORT, rowPins[row]) == GPIO_PIN_SET) {
           vTaskDelay(pdMS_TO_TICKS(10));
@@ -181,41 +178,39 @@ void KeyboardTask(void *pvParameters __attribute__((unused))) {
   }
 }
 
-void checkPassword(void) {
-    uint8_t isCorrect = 1;
-    
-    // Solo verificar los últimos 4 dígitos ingresados
-    if (dataIndex >= 4) {
-        int start = dataIndex - 4;
-        for(int i = 0; i < 4; i++) {
-            if(dataBuffer[start + i] != correctPassword[i]) {
-                isCorrect = 0;
-                break;
-            }
-        }
-    } else {
-        isCorrect = 0; // Si hay menos de 4 dígitos, la contraseña es incorrecta
-    }
-    
-    if(isCorrect) {
-        // Mostrar "OPEN" y activar el pin de salida
+void OpenTask(void *pvParameters) {
+    UNUSED(pvParameters);
+    while(1){
+      xSemaphoreTake(xSem, portMAX_DELAY);
+      uint8_t isCorrect = 1;
+      if (dataIndex >= 4) {
+          int start = dataIndex - 4;
+          for(int i = 0; i < 4; i++) {
+              if(dataBuffer[start + i] != correctPassword[i]) {
+                  isCorrect = 0;
+                  break;
+              }
+          }
+      } else {
+          isCorrect = 0; 
+      }
+      
+      if(isCorrect) {
         displayText("OPEN");
-        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);  // Activar pin de salida
-        vTaskDelay(pdMS_TO_TICKS(10000)); // Mostrar por 2 segundos
-        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);  // Desactivar pin
-    } else {
-        // Mostrar "FAIL"
-        displayText("FAIL");
-        vTaskDelay(pdMS_TO_TICKS(10000)); // Mostrar por 2 segundos
+        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);  
+        vTaskDelay(pdMS_TO_TICKS(10000)); 
+        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET); 
+      } else {
+          displayText("FAIL");
+          vTaskDelay(pdMS_TO_TICKS(10000)); 
+      }
+      dataIndex = 0;
+      displayNumber = 0;
+      for(int i = 0; i < 20; i++) {
+          dataBuffer[i] = 0;
+      }
+      updateDigits(displayNumber);
     }
-    
-    // Limpiar el buffer y display
-    dataIndex = 0;
-    displayNumber = 0;
-    for(int i = 0; i < 20; i++) {
-        dataBuffer[i] = 0;
-    }
-    updateDigits(displayNumber);
 }
 
 void updateDigits(uint32_t number) {
@@ -229,13 +224,11 @@ void displayText(const char* text) {
     int len = 0;
     while(text[len] != '\0' && len < 4) len++;
     for(int i = 0; i < 4; i++) {
-        // Invertimos el orden de escritura para que se muestre correctamente
-        int displayPos = 3 - i;  // Invertimos la posición (3,2,1,0 en lugar de 0,1,2,3)
+        int displayPos = 3 - i; 
         if (i < len && text[i] >= 'A' && text[i] <= 'Z') {
-            // Almacenamos el índice + 16 para distinguir entre números y letras
             digits[displayPos] = (text[i] - 'A') + 16;
         } else {
-            digits[displayPos] = 255; // valor fuera de rango para apagar el dígito
+            digits[displayPos] = 255; 
         }
     }
 }

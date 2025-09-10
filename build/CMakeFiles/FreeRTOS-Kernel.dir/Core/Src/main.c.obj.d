@@ -65,4 +65,7 @@ CMakeFiles/FreeRTOS-Kernel.dir/Core/Src/main.c.obj: \
  /home/rolando/install/FreeRTOS-Kernel/include/task.h \
  /home/rolando/install/FreeRTOS-Kernel/include/list.h \
  /home/rolando/install/FreeRTOS-Kernel/include/task.h \
- /home/rolando/install/FreeRTOS-Kernel/include/timers.h
+ /home/rolando/install/FreeRTOS-Kernel/include/timers.h \
+ /home/rolando/install/FreeRTOS-Kernel/include/semphr.h \
+ /home/rolando/install/FreeRTOS-Kernel/include/queue.h \
+ /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h

@@ -41,6 +41,7 @@ CMakeFiles/FreeRTOS-Kernel.dir/Core/Src/main.c.obj
  /home/rolando/install/FreeRTOS-Kernel/include/portable.h
  /home/rolando/install/FreeRTOS-Kernel/include/projdefs.h
  /home/rolando/install/FreeRTOS-Kernel/include/queue.h
+ /home/rolando/install/FreeRTOS-Kernel/include/semphr.h
  /home/rolando/install/FreeRTOS-Kernel/include/task.h
  /home/rolando/install/FreeRTOS-Kernel/include/timers.h
  /home/rolando/install/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/portmacro.h
@@ -109,6 +110,7 @@ CMakeFiles/FreeRTOS-Kernel.dir/Core/Src/main_init.c.obj
  /home/rolando/install/FreeRTOS-Kernel/include/portable.h
  /home/rolando/install/FreeRTOS-Kernel/include/projdefs.h
  /home/rolando/install/FreeRTOS-Kernel/include/queue.h
+ /home/rolando/install/FreeRTOS-Kernel/include/semphr.h
  /home/rolando/install/FreeRTOS-Kernel/include/task.h
  /home/rolando/install/FreeRTOS-Kernel/include/timers.h
  /home/rolando/install/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/portmacro.h
@@ -177,6 +179,7 @@ CMakeFiles/FreeRTOS-Kernel.dir/Core/Src/stm32f4xx_hal_msp.c.obj
  /home/rolando/install/FreeRTOS-Kernel/include/portable.h
  /home/rolando/install/FreeRTOS-Kernel/include/projdefs.h
  /home/rolando/install/FreeRTOS-Kernel/include/queue.h
+ /home/rolando/install/FreeRTOS-Kernel/include/semphr.h
  /home/rolando/install/FreeRTOS-Kernel/include/task.h
  /home/rolando/install/FreeRTOS-Kernel/include/timers.h
  /home/rolando/install/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/portmacro.h
@@ -246,6 +249,7 @@ CMakeFiles/FreeRTOS-Kernel.dir/Core/Src/stm32f4xx_it.c.obj
  /home/rolando/install/FreeRTOS-Kernel/include/portable.h
  /home/rolando/install/FreeRTOS-Kernel/include/projdefs.h
  /home/rolando/install/FreeRTOS-Kernel/include/queue.h
+ /home/rolando/install/FreeRTOS-Kernel/include/semphr.h
  /home/rolando/install/FreeRTOS-Kernel/include/task.h
  /home/rolando/install/FreeRTOS-Kernel/include/timers.h
  /home/rolando/install/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/portmacro.h
@@ -1190,6 +1194,7 @@ CMakeFiles/FreeRTOS-Kernel.dir/Middlewares/ST/STM32_USB_Device_Library/Class/CDC
  /home/rolando/install/FreeRTOS-Kernel/include/portable.h
  /home/rolando/install/FreeRTOS-Kernel/include/projdefs.h
  /home/rolando/install/FreeRTOS-Kernel/include/queue.h
+ /home/rolando/install/FreeRTOS-Kernel/include/semphr.h
  /home/rolando/install/FreeRTOS-Kernel/include/task.h
  /home/rolando/install/FreeRTOS-Kernel/include/timers.h
  /home/rolando/install/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/portmacro.h
@@ -1266,6 +1271,7 @@ CMakeFiles/FreeRTOS-Kernel.dir/Middlewares/ST/STM32_USB_Device_Library/Core/Src/
  /home/rolando/install/FreeRTOS-Kernel/include/portable.h
  /home/rolando/install/FreeRTOS-Kernel/include/projdefs.h
  /home/rolando/install/FreeRTOS-Kernel/include/queue.h
+ /home/rolando/install/FreeRTOS-Kernel/include/semphr.h
  /home/rolando/install/FreeRTOS-Kernel/include/task.h
  /home/rolando/install/FreeRTOS-Kernel/include/timers.h
  /home/rolando/install/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/portmacro.h
@@ -1342,6 +1348,7 @@ CMakeFiles/FreeRTOS-Kernel.dir/Middlewares/ST/STM32_USB_Device_Library/Core/Src/
  /home/rolando/install/FreeRTOS-Kernel/include/portable.h
  /home/rolando/install/FreeRTOS-Kernel/include/projdefs.h
  /home/rolando/install/FreeRTOS-Kernel/include/queue.h
+ /home/rolando/install/FreeRTOS-Kernel/include/semphr.h
  /home/rolando/install/FreeRTOS-Kernel/include/task.h
  /home/rolando/install/FreeRTOS-Kernel/include/timers.h
  /home/rolando/install/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/portmacro.h
@@ -1418,6 +1425,7 @@ CMakeFiles/FreeRTOS-Kernel.dir/Middlewares/ST/STM32_USB_Device_Library/Core/Src/
  /home/rolando/install/FreeRTOS-Kernel/include/portable.h
  /home/rolando/install/FreeRTOS-Kernel/include/projdefs.h
  /home/rolando/install/FreeRTOS-Kernel/include/queue.h
+ /home/rolando/install/FreeRTOS-Kernel/include/semphr.h
  /home/rolando/install/FreeRTOS-Kernel/include/task.h
  /home/rolando/install/FreeRTOS-Kernel/include/timers.h
  /home/rolando/install/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/portmacro.h
@@ -1498,6 +1506,7 @@ CMakeFiles/FreeRTOS-Kernel.dir/USB_DEVICE/App/usb_device.c.obj
  /home/rolando/install/FreeRTOS-Kernel/include/portable.h
  /home/rolando/install/FreeRTOS-Kernel/include/projdefs.h
  /home/rolando/install/FreeRTOS-Kernel/include/queue.h
+ /home/rolando/install/FreeRTOS-Kernel/include/semphr.h
  /home/rolando/install/FreeRTOS-Kernel/include/task.h
  /home/rolando/install/FreeRTOS-Kernel/include/timers.h
  /home/rolando/install/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/portmacro.h
@@ -1576,6 +1585,7 @@ CMakeFiles/FreeRTOS-Kernel.dir/USB_DEVICE/App/usbd_cdc_if.c.obj
  /home/rolando/install/FreeRTOS-Kernel/include/portable.h
  /home/rolando/install/FreeRTOS-Kernel/include/projdefs.h
  /home/rolando/install/FreeRTOS-Kernel/include/queue.h
+ /home/rolando/install/FreeRTOS-Kernel/include/semphr.h
  /home/rolando/install/FreeRTOS-Kernel/include/task.h
  /home/rolando/install/FreeRTOS-Kernel/include/timers.h
  /home/rolando/install/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/portmacro.h
@@ -1653,6 +1663,7 @@ CMakeFiles/FreeRTOS-Kernel.dir/USB_DEVICE/App/usbd_desc.c.obj
  /home/rolando/install/FreeRTOS-Kernel/include/portable.h
  /home/rolando/install/FreeRTOS-Kernel/include/projdefs.h
  /home/rolando/install/FreeRTOS-Kernel/include/queue.h
+ /home/rolando/install/FreeRTOS-Kernel/include/semphr.h
  /home/rolando/install/FreeRTOS-Kernel/include/task.h
  /home/rolando/install/FreeRTOS-Kernel/include/timers.h
  /home/rolando/install/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/portmacro.h
@@ -1730,6 +1741,7 @@ CMakeFiles/FreeRTOS-Kernel.dir/USB_DEVICE/Target/usbd_conf.c.obj
  /home/rolando/install/FreeRTOS-Kernel/include/portable.h
  /home/rolando/install/FreeRTOS-Kernel/include/projdefs.h
  /home/rolando/install/FreeRTOS-Kernel/include/queue.h
+ /home/rolando/install/FreeRTOS-Kernel/include/semphr.h
  /home/rolando/install/FreeRTOS-Kernel/include/task.h
  /home/rolando/install/FreeRTOS-Kernel/include/timers.h
  /home/rolando/install/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/portmacro.h

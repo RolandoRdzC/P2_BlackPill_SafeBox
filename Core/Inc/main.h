@@ -9,6 +9,7 @@
 #include <queue.h>
 #include <task.h>
 #include <timers.h>
+#include <semphr.h>
 
 // Configuración del tipo de display
 #define COMMON_ANODE 1 // Cambiar a 0 para display de cátodo común
@@ -71,7 +72,7 @@ void KeyboardTask(void *pvParameters);
 void updateDigits(uint32_t number);
 void displayDigit(uint8_t value, uint8_t isLetter);
 void displayText(const char* text);
-void checkPassword(void);
+void OpenTask(void *pvParameters);
 
 #define LOCK_PIN GPIO_PIN_12
 #define LOCK_PORT GPIOB

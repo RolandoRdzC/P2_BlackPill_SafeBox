@@ -65,4 +65,6 @@ CMakeFiles/P2_BlackPill.dir/Core/Src/stm32f4xx_hal_msp.c.obj: \
  /home/rolando/install/FreeRTOS-Kernel/include/task.h \
  /home/rolando/install/FreeRTOS-Kernel/include/list.h \
  /home/rolando/install/FreeRTOS-Kernel/include/task.h \
- /home/rolando/install/FreeRTOS-Kernel/include/timers.h
+ /home/rolando/install/FreeRTOS-Kernel/include/timers.h \
+ /home/rolando/install/FreeRTOS-Kernel/include/semphr.h \
+ /home/rolando/install/FreeRTOS-Kernel/include/queue.h
