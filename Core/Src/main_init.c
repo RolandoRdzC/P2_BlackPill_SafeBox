@@ -1,3 +1,6 @@
+#include "stm32f411xe.h"
+#include "stm32f4xx.h"
+#include "stm32f4xx_hal_gpio.h"
 #include <main.h>
 // extern UART_HandleTypeDef huart1;
 
@@ -55,6 +58,7 @@ void GPIO_Init(void) {
   pin.Pull = GPIO_NOPULL;
   pin.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &pin);
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, DIGIT_OFF);
   
   // Configurar pines para segmentos (PA0-PA7)
   pin.Pin = SEG_A_PIN | SEG_B_PIN | SEG_C_PIN | SEG_D_PIN |
@@ -99,7 +103,7 @@ void GPIO_Init(void) {
   
   // Inicializar columnas del teclado y pin de bloqueo en estado inicial
   HAL_GPIO_WritePin(COLUMN_PORT, COLUMN_1_PIN | COLUMN_2_PIN | COLUMN_3_PIN | COLUMN_4_PIN, DIGIT_OFF);
-  HAL_GPIO_WritePin(LOCK_PORT, LOCK_PIN, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LOCK_PORT, LOCK_PIN, GPIO_PIN_SET);
 }
 
 /*

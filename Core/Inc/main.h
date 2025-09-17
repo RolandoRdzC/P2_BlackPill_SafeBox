@@ -74,7 +74,7 @@ void displayDigit(uint8_t value, uint8_t isLetter);
 void displayText(const char* text);
 void OpenTask(void *pvParameters);
 
-#define LOCK_PIN GPIO_PIN_12
+#define LOCK_PIN GPIO_PIN_8
 #define LOCK_PORT GPIOB
 
 #endif /* __MAIN_H */

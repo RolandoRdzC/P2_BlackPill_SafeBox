@@ -1,11 +1,5 @@
 CMakeFiles/FreeRTOS-Kernel.dir/Core/Src/main_init.c.obj: \
  /home/rolando/Documents/real_Time/Projects/P2_BlackPill/Core/Src/main_init.c \
- /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Core/Inc/main.h \
- /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
- /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Core/Inc/stm32f4xx_hal_conf.h \
- /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
- /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h \
- /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h \
  /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h \
  /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Drivers/CMSIS/Include/core_cm4.h \
  /usr/lib/gcc/arm-none-eabi/14.2.0/include/stdint.h \
@@ -20,6 +14,12 @@ CMakeFiles/FreeRTOS-Kernel.dir/Core/Src/main_init.c.obj: \
  /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Drivers/CMSIS/Include/cmsis_gcc.h \
  /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Drivers/CMSIS/Include/mpu_armv7.h \
  /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h \
+ /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h \
+ /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h \
+ /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
+ /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Core/Inc/stm32f4xx_hal_conf.h \
+ /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
+ /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h \
  /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h \
  /usr/lib/gcc/arm-none-eabi/14.2.0/include/stddef.h \
  /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h \
@@ -38,6 +38,7 @@ CMakeFiles/FreeRTOS-Kernel.dir/Core/Src/main_init.c.obj: \
  /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd.h \
  /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h \
  /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h \
+ /home/rolando/Documents/real_Time/Projects/P2_BlackPill/cmake/stm32cubemx/../../Core/Inc/main.h \
  /usr/arm-none-eabi/include/stdio.h /usr/arm-none-eabi/include/_ansi.h \
  /usr/arm-none-eabi/include/newlib.h \
  /usr/arm-none-eabi/include/sys/config.h \

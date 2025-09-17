@@ -49,7 +49,7 @@ const uint8_t letterPatterns[] = {
 volatile uint32_t displayNumber = 0; 
 volatile uint8_t digits[4] = {0};
 volatile uint8_t column = 0;
-volatile uint8_t dataBuffer[20] = {0};  
+volatile uint8_t dataBuffer[4] = {0};  
 volatile uint8_t dataIndex = 0;      
 SemaphoreHandle_t xSem;
 
@@ -140,7 +140,7 @@ void KeyboardTask(void *pvParameters __attribute__((unused))) {
       if (HAL_GPIO_ReadPin(ROW_PORT, rowPins[row]) == GPIO_PIN_SET) {
         char pressedKey = keymap[row][currentColumn];
         if (pressedKey >= '0' && pressedKey <= '9') {
-          if (dataIndex < 20) {
+          if (dataIndex < 4) {
             dataBuffer[dataIndex] = pressedKey - '0';
             dataIndex++;
             displayNumber = 0;
@@ -197,16 +197,16 @@ void OpenTask(void *pvParameters) {
       
       if(isCorrect) {
         displayText("OPEN");
-        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);  
+        HAL_GPIO_WritePin(LOCK_PORT, LOCK_PIN, GPIO_PIN_RESET);  
         vTaskDelay(pdMS_TO_TICKS(10000)); 
-        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET); 
+        HAL_GPIO_WritePin(LOCK_PORT, LOCK_PIN, GPIO_PIN_SET); 
       } else {
           displayText("FAIL");
           vTaskDelay(pdMS_TO_TICKS(10000)); 
       }
       dataIndex = 0;
       displayNumber = 0;
-      for(int i = 0; i < 20; i++) {
+      for(int i = 0; i < 4; i++) {
           dataBuffer[i] = 0;
       }
       updateDigits(displayNumber);
